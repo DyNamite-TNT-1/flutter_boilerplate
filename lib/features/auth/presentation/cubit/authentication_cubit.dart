@@ -31,8 +31,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       final user = _getCachedUserUseCase();
       if (user == null) {
         emit((state.copyWith(authState: CommonStateObject.failed(msg: ""))));
+      } else {
+        emit((state.copyWith(authState: CommonStateObject.success())));
       }
-      emit((state.copyWith(authState: CommonStateObject.success())));
     } catch (e) {
       emit(
         (state.copyWith(
@@ -54,8 +55,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
             ),
           )),
         );
+      } else {
+        emit((state.copyWith(authState: CommonStateObject.success())));
       }
-      emit((state.copyWith(authState: CommonStateObject.success())));
     } catch (e) {
       emit(
         (state.copyWith(
@@ -77,8 +79,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
             ),
           )),
         );
+      } else {
+        emit((state.copyWith(authState: CommonStateObject.success())));
       }
-      emit((state.copyWith(authState: CommonStateObject.success())));
     } catch (e) {
       emit(
         (state.copyWith(
@@ -100,8 +103,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
             ),
           )),
         );
+      } else {
+        emit((state.copyWith(authState: CommonStateObject.success())));
       }
-      emit((state.copyWith(authState: CommonStateObject.success())));
     } catch (e) {
       emit(
         (state.copyWith(
