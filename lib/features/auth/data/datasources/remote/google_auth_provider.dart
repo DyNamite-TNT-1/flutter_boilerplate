@@ -1,15 +1,15 @@
-import 'package:test_three/features/auth/domain/entities/user_entity.dart';
+import 'package:test_three/features/auth/data/models/user_model.dart';
 
 abstract class GoogleAuthProvider {
-  Future<UserEntity?> signIn();
+  Future<UserModel?> signIn();
   Future<void> signOut();
 }
 
 class GoogleAuthProviderImpl implements GoogleAuthProvider {
   @override
-  Future<UserEntity?> signIn() {
+  Future<UserModel?> signIn() async {
     // TODO: implement signIn
-    throw UnimplementedError();
+    return UserModel();
   }
 
   @override

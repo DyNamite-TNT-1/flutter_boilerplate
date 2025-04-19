@@ -21,21 +21,37 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   UserEntity? getCachedUser() {
-    return userLocalStorage.getUser();
+    final model = userLocalStorage.getUser();
+    if (model != null) {
+      return UserEntity.fromModel(model);
+    }
+    return null;
   }
 
   @override
   Future<UserEntity?> signInWithEmail(String email, String password) async {
-    return await emailProvider.signIn(email, password);
+    final model = await emailProvider.signIn(email, password);
+    if (model != null) {
+      return UserEntity.fromModel(model);
+    }
+    return null;
   }
 
   @override
   Future<UserEntity?> signInWithGoogle() async {
-    return await googleProvider.signIn();
+    final model = await googleProvider.signIn();
+    if (model != null) {
+      return UserEntity.fromModel(model);
+    }
+    return null;
   }
 
   @override
   Future<UserEntity?> signInWithBiometric() async {
-    return await biometricProvider.signIn();
+    final model = await biometricProvider.signIn();
+    if (model != null) {
+      return UserEntity.fromModel(model);
+    }
+    return null;
   }
 }

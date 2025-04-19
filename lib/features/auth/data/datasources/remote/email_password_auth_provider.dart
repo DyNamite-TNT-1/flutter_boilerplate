@@ -1,15 +1,15 @@
-import 'package:test_three/features/auth/domain/entities/user_entity.dart';
+import 'package:test_three/features/auth/data/models/user_model.dart';
 
 abstract class EmailPasswordAuthProvider {
-  Future<UserEntity?> signIn(String email, String password);
+  Future<UserModel?> signIn(String email, String password);
   Future<void> signOut();
 }
 
 class EmailPasswordAuthProviderImpl implements EmailPasswordAuthProvider {
   @override
-  Future<UserEntity?> signIn(String email, String password) {
+  Future<UserModel?> signIn(String email, String password) async {
     // TODO: implement login
-    throw UnimplementedError();
+    return UserModel();
   }
 
   @override
