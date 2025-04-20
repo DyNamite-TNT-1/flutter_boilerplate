@@ -18,6 +18,8 @@ dependencies:
   # F
   flutter_bloc: ^9.1.0
   flutter_secure_storage: ^9.2.4
+  #G
+  get_it: ^8.0.3
   # S
   shared_preferences: ^2.5.3
 

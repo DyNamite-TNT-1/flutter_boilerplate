@@ -1,7 +1,6 @@
-import 'package:equatable/equatable.dart';
 import 'package:test_three/features/payment/data/models/payment_response_model.dart';
 
-class PaymentResponseEntity with EquatableMixin {
+class PaymentResponseEntity {
   final bool isSuccess;
   final String message;
   final Map<String, dynamic> data;
@@ -19,8 +18,4 @@ class PaymentResponseEntity with EquatableMixin {
       data: model.data,
     );
   }
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => [isSuccess, message, data];
 }
