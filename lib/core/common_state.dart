@@ -4,9 +4,9 @@ enum CommonState { init, loading, refresh, failed, success }
 
 class CommonStateObject extends Equatable {
   final CommonState state;
-  final String? message;
+  final String message;
 
-  const CommonStateObject({this.state = CommonState.init, this.message});
+  const CommonStateObject({this.state = CommonState.init, this.message = ""});
 
   CommonStateObject copyWith({CommonState? state, String? message}) {
     return CommonStateObject(

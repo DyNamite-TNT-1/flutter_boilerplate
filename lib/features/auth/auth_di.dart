@@ -11,6 +11,7 @@ import 'package:test_three/features/auth/domain/usecases/get_cached_user_usecase
 import 'package:test_three/features/auth/domain/usecases/sign_in_with_biometric_usecase.dart';
 import 'package:test_three/features/auth/domain/usecases/sign_in_with_email_usecase.dart';
 import 'package:test_three/features/auth/domain/usecases/sign_in_with_google_usecase.dart';
+import 'package:test_three/features/auth/domain/usecases/sign_out_usecase.dart';
 
 void initAuthDependencies() {
   final getIt = GetIt.instance;
@@ -55,5 +56,8 @@ void initAuthDependencies() {
   );
   getIt.registerLazySingleton(
     () => SignInWithBiometricUsecase(getIt<AuthRepository>()),
+  );
+   getIt.registerLazySingleton(
+    () => SignOutUsecase(getIt<AuthRepository>()),
   );
 }

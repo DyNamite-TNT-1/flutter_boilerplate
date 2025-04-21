@@ -2,7 +2,6 @@ import 'package:test_three/features/auth/data/models/user_model.dart';
 
 abstract class GoogleAuthProvider {
   Future<UserModel?> signIn();
-  Future<void> signOut();
 }
 
 class GoogleAuthProviderImpl implements GoogleAuthProvider {
@@ -10,11 +9,5 @@ class GoogleAuthProviderImpl implements GoogleAuthProvider {
   Future<UserModel?> signIn() async {
     // TODO: implement signIn
     return UserModel();
-  }
-
-  @override
-  Future<void> signOut() {
-    // TODO: implement signOut
-    throw UnimplementedError();
   }
 }

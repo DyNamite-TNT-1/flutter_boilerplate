@@ -5,4 +5,6 @@ abstract class AuthRepository {
   Future<UserEntity?> signInWithEmail(String email, String password);
   Future<UserEntity?> signInWithGoogle();
   Future<UserEntity?> signInWithBiometric();
+  Future<void> signOut();
+  Future<bool> isAuthenticated();
 }

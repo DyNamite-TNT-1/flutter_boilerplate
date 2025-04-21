@@ -54,4 +54,15 @@ class AuthRepositoryImpl extends AuthRepository {
     }
     return null;
   }
+
+  @override
+  Future<void> signOut() async {
+    await userLocalStorage.clearCache();
+  }
+
+  @override
+  Future<bool> isAuthenticated() async {
+    final token = await userLocalStorage.getToken();
+    return token != null;
+  }
 }

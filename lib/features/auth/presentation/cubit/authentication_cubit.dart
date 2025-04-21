@@ -5,6 +5,7 @@ import 'package:test_three/features/auth/domain/usecases/get_cached_user_usecase
 import 'package:test_three/features/auth/domain/usecases/sign_in_with_biometric_usecase.dart';
 import 'package:test_three/features/auth/domain/usecases/sign_in_with_email_usecase.dart';
 import 'package:test_three/features/auth/domain/usecases/sign_in_with_google_usecase.dart';
+import 'package:test_three/features/auth/domain/usecases/sign_out_usecase.dart';
 
 part 'authentication_state.dart';
 
@@ -13,16 +14,19 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   final SignInWithEmailUseCase _signInWithEmailUsecase;
   final SignInWithBiometricUsecase _signInWithBiometricUsecase;
   final SignInWithGoogleUsecase _signInWithGoogleUsecase;
+  final SignOutUsecase _signOutUsecase;
 
   AuthenticationCubit({
     required GetCachedUserUseCase getCachedUserUseCase,
     required SignInWithEmailUseCase signInWithEmailUsecase,
     required SignInWithBiometricUsecase signInWithBiometricUsecase,
     required SignInWithGoogleUsecase signInWithGoogleUsecase,
+    required SignOutUsecase signOutUsecase,
   }) : _getCachedUserUseCase = getCachedUserUseCase,
        _signInWithEmailUsecase = signInWithEmailUsecase,
        _signInWithBiometricUsecase = signInWithBiometricUsecase,
        _signInWithGoogleUsecase = signInWithGoogleUsecase,
+       _signOutUsecase = signOutUsecase,
        super(AuthenticationState());
 
   void getCachedUser() {
@@ -113,5 +117,13 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         )),
       );
     }
+  }
+
+  Future<void> signOut() async {
+    emit(state.copyWith(authState: CommonStateObject.loading()));
+    await _signOutUsecase();
+    emit(
+      (state.copyWith(authState: CommonStateObject.failed(msg: "Signed out"))),
+    );
   }
 }
