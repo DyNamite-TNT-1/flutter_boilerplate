@@ -1,10 +1,11 @@
 import 'package:test_three/features/auth/data/datasources/local/user_local_storage.dart';
-import 'package:test_three/features/auth/data/datasources/remote/biometric_auth_provider.dart';
+import 'package:test_three/features/auth/data/datasources/remote/providers/biometric_auth_provider.dart';
+import 'package:test_three/features/auth/data/models/auth_response.dart';
 import 'package:test_three/features/auth/domain/entities/user_entity.dart';
 import 'package:test_three/features/auth/domain/repositories/auth_repository.dart';
 
-import '../datasources/remote/email_password_auth_provider.dart';
-import '../datasources/remote/google_auth_provider.dart';
+import '../datasources/remote/providers/email_password_auth_provider.dart';
+import '../datasources/remote/providers/google_auth_provider.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final UserLocalStorage userLocalStorage;
@@ -29,40 +30,34 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<UserEntity?> signInWithEmail(String email, String password) async {
-    final model = await emailProvider.signIn(email, password);
-    if (model != null) {
-      return UserEntity.fromModel(model);
+  Future<AuthResponse> signInWithEmail(String email, String password) async {
+    final response = await emailProvider.signIn(email, password);
+    if (response.success && response.user != null) {
+      await userLocalStorage.saveUser(response.user!);
     }
-    return null;
+    return response;
   }
 
   @override
-  Future<UserEntity?> signInWithGoogle() async {
-    final model = await googleProvider.signIn();
-    if (model != null) {
-      return UserEntity.fromModel(model);
+  Future<AuthResponse> signInWithGoogle() async {
+    final response = await googleProvider.signIn();
+    if (response.success && response.user != null) {
+      await userLocalStorage.saveUser(response.user!);
     }
-    return null;
+    return response;
   }
 
   @override
-  Future<UserEntity?> signInWithBiometric() async {
-    final model = await biometricProvider.signIn();
-    if (model != null) {
-      return UserEntity.fromModel(model);
+  Future<AuthResponse> signInWithBiometric() async {
+    final response = await biometricProvider.signIn();
+    if (response.success && response.user != null) {
+      await userLocalStorage.saveUser(response.user!);
     }
-    return null;
+    return response;
   }
 
   @override
   Future<void> signOut() async {
     await userLocalStorage.clearCache();
-  }
-
-  @override
-  Future<bool> isAuthenticated() async {
-    final token = await userLocalStorage.getToken();
-    return token != null;
   }
 }

@@ -1,37 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_three/core/common_state.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:test_three/features/auth/presentation/cubit/authentication_cubit.dart';
-import 'package:test_three/features/auth/presentation/pages/sign_out_page.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<SignInPage> createState() => SignInPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class SignInPageState extends State<SignInPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  bool _enableToast = true;
+
+  // Fluttertoast doen't support for testing.
+  // Need disable it when testing.
+  @visibleForTesting
+  void setEnableToast(bool enable) {
+    setState(() {
+      _enableToast = enable;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign In'),
-        automaticallyImplyLeading: false,
-      ),
+      appBar: AppBar(title: const Text('Sign In')),
       body: BlocConsumer<AuthenticationCubit, AuthenticationState>(
+        listenWhen: (previous, current) {
+          return current is AuthenticationFail;
+        },
         listener: (context, state) {
-          if (state.authState.state == CommonState.success) {
-            Navigator.of(
-              context,
-            ).push(MaterialPageRoute(builder: (context) => SignOutPage()));
-          } else if (state.authState.state == CommonState.failed) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.authState.message)));
+          if (_enableToast &&
+              state is AuthenticationFail &&
+              state.messageError.isNotEmpty) {
+            Fluttertoast.showToast(
+              msg: state.messageError.trim(),
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+            );
           }
         },
         builder: (context, state) {
@@ -52,6 +63,18 @@ class _SignInPageState extends State<SignInPage> {
                       obscureText: true,
                     ),
                     const SizedBox(height: 20),
+                    // show error message by Text when testing
+                    if (!_enableToast &&
+                        state is AuthenticationFail &&
+                        state.messageError.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0),
+                        child: Text(
+                          key: const Key('error_text'),
+                          state.messageError.trim(),
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      ),
                     ElevatedButton(
                       onPressed: () {
                         final email = _emailController.text;
@@ -84,7 +107,7 @@ class _SignInPageState extends State<SignInPage> {
               ),
               Positioned.fill(
                 child: Visibility(
-                  visible: state.authState.state == CommonState.loading,
+                  visible: state is Authenticating,
                   child: Center(child: CircularProgressIndicator()),
                 ),
               ),

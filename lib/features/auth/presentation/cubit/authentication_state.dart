@@ -1,14 +1,14 @@
 part of 'authentication_cubit.dart';
 
-class AuthenticationState extends Equatable {
-  final CommonStateObject authState;
+abstract class AuthenticationState {}
 
-  const AuthenticationState({this.authState = const CommonStateObject()});
+class InitialAuthenticationState extends AuthenticationState {}
 
-  AuthenticationState copyWith({CommonStateObject? authState}) {
-    return AuthenticationState(authState: authState ?? this.authState);
-  }
+class AuthenticationSuccess extends AuthenticationState {}
 
-  @override
-  List<Object?> get props => [authState];
+class Authenticating extends AuthenticationState {}
+
+class AuthenticationFail extends AuthenticationState {
+  final String messageError;
+  AuthenticationFail({required this.messageError});
 }
